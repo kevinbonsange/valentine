@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Min Valentine 💘</title>
+
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+
+        background-image:
+          linear-gradient(
+            rgba(80, 0, 20, 0.55),
+            rgba(80, 0, 20, 0.55)
+          ),
+          url("roses.webp");
+        background-size: 120% 120%;
+        background-position: 0% 0%;
+        background-repeat: no-repeat;
+        animation: moveBackground 60s linear infinite;
+
+        font-family: "Georgia", serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      @keyframes moveBackground {
+        0% { background-position: 0% 0%; }
+        50% { background-position: 100% 100%; }
+        100% { background-position: 0% 0%; }
+      }
+
+      .wrapper {
+        width: 100%;
+        max-width: 700px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* ===== Slideshow ===== */
+      .slideshow {
+        height: 60vh;
+        display: none;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .slideshow img {
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 25px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+        animation: fadeIn 1.2s ease-in-out;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.97); }
+        to   { opacity: 1; transform: scale(1); }
+      }
+
+      /* ===== Kort ===== */
+      .card {
+        margin-top: 20px;
+        background-color: #6a0018;
+        border-radius: 25px;
+        padding: 30px;
+        text-align: center;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+      }
+
+      h1 {
+        color: #ffe5ec;
+        margin-top: 0;
+      }
+
+      p {
+        color: #ffd6e0;
+        font-size: 18px;
+        margin-bottom: 20px;
+      }
+
+      .buttons button {
+        font-size: 18px;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        margin: 5px;
+
+        background-color: #ffe5ec;
+        color: #6a0018;
+        font-weight: bold;
+      }
+
+      .buttons button:hover {
+        background-color: #ffd6e0;
+      }
+
+      /* 🎉 Konfetti */
+      .confetti {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+      }
+
+      .confetti span {
+        position: absolute;
+        top: -10px;
+        font-size: 24px;
+        animation: fall 6s linear infinite;
+      }
+
+      @keyframes fall {
+        to {
+          transform: translateY(110vh) rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <!-- Slideshow -->
+      <div class="slideshow" id="slideshow">
+        <img id="slide" src="" alt="Bild på oss" />
+      </div>
+
+      <!-- Kort -->
+      <div class="card">
+        <h1 id="title">Hej baby 💕</h1>
+        <p id="text">Har en viktig fråga till dig (svara ja)</p>
+
+        <div class="buttons" id="buttons">
+          <button onclick="steg2()">Okej</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Konfetti -->
+    <div class="confetti" id="confetti"></div>
+
+    <!-- Musik -->
+    <audio id="musik" loop>
+      <source src="musik.mp3" type="audio/mpeg" />
+    </audio>
+
+    <script>
+      const bilder = [
+        "bild1.png",
+        "bild2.webp",
+        "bild3.webp",
+        "bild4.webp",
+        "bild5.jpg",
+        "bild6.jpg"
+      ];
+
+      let index = 0;
+
+      function steg2() {
+        document.getElementById("title").innerText =
+          "Vill du bli min Valentine? 💘";
+
+        document.getElementById("text").innerText =
+          "Tänk efter noga 😏";
+
+        document.getElementById("buttons").innerHTML = `
+          <button onclick="final()">Ja 💕</button>
+          <button onclick="final()">Ja 😏</button>
+        `;
+      }
+
+      function final() {
+        document.getElementById("title").innerText = "";
+        document.getElementById("text").innerText =
+          "BÄST FÖR DIG!!! Jag älskar dig❤️";
+
+        document.getElementById("buttons").innerHTML = "";
+
+        // 🎉 Konfetti
+        const confetti = document.getElementById("confetti");
+        for (let i = 0; i < 40; i++) {
+          const span = document.createElement("span");
+          span.innerText = "🎉";
+          span.style.left = Math.random() * 100 + "%";
+          span.style.animationDelay = Math.random() * 5 + "s";
+          confetti.appendChild(span);
+        }
+
+        // 🖼️ Slideshow
+        const slideshow = document.getElementById("slideshow");
+        const img = document.getElementById("slide");
+        slideshow.style.display = "flex";
+        img.src = bilder[index];
+
+        setInterval(() => {
+          index = (index + 1) % bilder.length;
+          img.src = bilder[index];
+        }, 4500);
+
+        // 🎶 Musik
+        const musik = document.getElementById("musik");
+        musik.volume = 0.3;
+        musik.play();
+      }
+    </script>
+  </body>
+</html>
